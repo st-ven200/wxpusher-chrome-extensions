@@ -264,7 +264,15 @@ function listenNotificationClicked() {
 		consoleLog("点击通知，id=" + id)
 		//点击了以后，关闭对应的通知
 		chrome.notifications.clear(id)
-		var url = id.startsWith("http") ? id : 'https://wxpusher.zjiecode.com/api/message/' + id
+		let url = '';
+		if (id.startsWith("http://") || id.startsWith("https://")) {
+			url = id;
+		} else if (id.startsWith("v2/")) {
+			url = 'https://wxpusher.zjiecode.com/api/message/' + id;
+		} else {
+			// 解决旧版接口停用问题：统一使用 V2 接口，兼容处理 V1_ 前缀或纯 ID
+			url = 'https://wxpusher.zjiecode.com/api/message/v2/' + id;
+		}
 		chrome.tabs.create({
 			'url': url
 		});

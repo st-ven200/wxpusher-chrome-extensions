@@ -57,7 +57,8 @@ function initStatus(){
 function initWsConnect() {
 	wsConnect(function (wsMsg) {
 		if (wsMsg.msgType === WS_MSG_TYPE_UPSH_NOTIFICATION) {
-			showNotification(wsMsg.title || 'WxPusher通知提醒',wsMsg.summary || wsMsg.content,wsMsg.qid);
+			var targetId = wsMsg.url || wsMsg.messageUrl || wsMsg.qid;
+			showNotification(wsMsg.title || 'WxPusher通知提醒', wsMsg.summary || wsMsg.content, targetId);
 			return
 		}
 		if (wsMsg.msgType === WS_MSG_TYPE_INIT) {
